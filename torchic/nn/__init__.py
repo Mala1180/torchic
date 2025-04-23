@@ -98,9 +98,8 @@ class NeuralNetwork(nn.Module):
                 self.test_losses.append(loss.item())
                 test_loss = test_loss + loss.item()
                 predictions_tensor: Tensor = pred.argmax(1) == y
-                correct_predictions = (
-                    correct_predictions
-                    + predictions_tensor.type(torch.int).sum().item()
+                correct_predictions = correct_predictions + int(
+                    predictions_tensor.int().sum().item()
                 )
 
         avg_loss: float = test_loss / num_batches
