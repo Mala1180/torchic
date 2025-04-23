@@ -15,6 +15,7 @@ coverage = "^7.8.0"
 mypy = "^1.15.0"
 ruff = "^0.11.6"
 pytest = "^8.3.5"
+torch = "^2.7.0"
 
 [tool.poe.tasks]
 test = "pytest"
