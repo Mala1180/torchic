@@ -2,4 +2,4 @@ import logging
 
 
 logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger("my_project")
+logger = logging.getLogger("torchic")

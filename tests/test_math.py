@@ -1,4 +1,4 @@
-from my_project import sub, add, mul, div
+from torchic import sub, add, mul, div
 
 
 def test_sum():

@@ -1,9 +1,9 @@
 [tool.poetry]
-name = "python-project-template__Mala1180"
+name = "torchic"
 packages = [
-    { include = "my_project" },
+    { include = "torchic" },
 ]
-version = "1.1.2"
+version = "0.1.0"
 description = "A python project template, using Poetry."
 authors = ["Mattia Matteini <matteinimattia@gmail.com>"]
 license = "MIT"
@@ -24,8 +24,8 @@ coverage-html = "coverage html"
 ruff-check = "ruff check"
 ruff-fix = "ruff check --fix"
 format = "ruff format"
-mypy = "mypy my_project tests"
-compile = "python -m compileall my_project tests"
+mypy = "mypy torchic tests"
+compile = "python -m compileall torchic tests"
 static-checks = [
     "ruff-check",
     "mypy",
