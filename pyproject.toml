@@ -3,7 +3,7 @@ name = "pytorchic"
 packages = [
     { include = "torchic" },
 ]
-version = "1.0.0"
+version = "1.0.1"
 description = "A python project template, using Poetry."
 authors = ["Mattia Matteini <matteinimattia@gmail.com>"]
 license = "MIT"

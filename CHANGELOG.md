@@ -1,3 +1,9 @@
+## [1.0.1](https://github.com/Mala1180/torchic/compare/1.0.0...1.0.1) (2025-04-23)
+
+### Bug Fixes
+
+* change project name ([51e6169](https://github.com/Mala1180/torchic/commit/51e6169cbe2614e2a20550c9e08005d3d5b29a87))
+
 ## 1.0.0 (2025-04-23)
 
 ### Features
