@@ -1,0 +1,36 @@
+[tool.poetry]
+name = "python-project-template__Mala1180"
+packages = [
+    { include = "my_project" },
+]
+version = "1.1.2"
+description = "A python project template, using Poetry."
+authors = ["Mattia Matteini <matteinimattia@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+coverage = "^7.8.0"
+mypy = "^1.15.0"
+ruff = "^0.11.6"
+pytest = "^8.3.5"
+
+[tool.poe.tasks]
+test = "pytest"
+coverage = "coverage run -m pytest"
+coverage-report = "coverage report -m"
+coverage-html = "coverage html"
+ruff-check = "ruff check"
+ruff-fix = "ruff check --fix"
+format = "ruff format"
+mypy = "mypy my_project tests"
+compile = "python -m compileall my_project tests"
+static-checks = [
+    "ruff-check",
+    "mypy",
+]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
