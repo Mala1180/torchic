@@ -16,6 +16,7 @@ mypy = "^1.15.0"
 ruff = "^0.11.6"
 pytest = "^8.3.5"
 torch = "^2.7.0"
+matplotlib = "^3.10.1"
 
 [tool.poe.tasks]
 test = "pytest"
