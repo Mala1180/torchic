@@ -3,7 +3,7 @@ name = "pytorchic"
 packages = [
     { include = "torchic" },
 ]
-version = "1.0.1"
+version = "2.0.0"
 description = "A framework for instantly building flexible PyTorch models."
 authors = ["Mattia Matteini <matteinimattia@gmail.com>"]
 license = "MIT"
