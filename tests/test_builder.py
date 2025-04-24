@@ -1,15 +1,14 @@
 import pytest
-import torch
 from torch import nn
 
 from torchic.nn import NeuralNetwork
 from torchic.nn.builder import NeuralNetworkBuilder
-from torchic.utils import DEVICE
+from torchic.utils import get_current_device
 
 
 @pytest.fixture
 def builder() -> NeuralNetworkBuilder:
-    return NeuralNetworkBuilder(device=torch.device(DEVICE))
+    return NeuralNetworkBuilder(device=get_current_device())
 
 
 class TestNeuralNetworkBuilder:
