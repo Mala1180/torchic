@@ -1,3 +1,4 @@
+from copy import deepcopy
 from typing import Dict, Callable
 
 import torch
@@ -67,4 +68,8 @@ class NeuralNetworkBuilder:
         Build the NeuralNetwork instance.
         :return: the neural network created up to this point
         """
-        return NeuralNetwork(self.layers).to(self.device)
+        if len(self.layers) == 0:
+            raise ValueError("No layers have been added to the network.")
+        layers: nn.ModuleDict = deepcopy(self.layers)
+        self.layers.clear()
+        return NeuralNetwork(layers).to(self.device)
