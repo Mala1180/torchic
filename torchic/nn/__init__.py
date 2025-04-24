@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import torch
 from torch import nn, Tensor
 from torch.utils.data import DataLoader
+from torch.optim.optimizer import Optimizer
 
 
 class InferenceResult:
@@ -50,18 +51,29 @@ class NeuralNetwork(nn.Module):
         train_dataloader: DataLoader,
         test_dataloader: DataLoader,
         loss_fn: Callable[[Tensor, Tensor], Tensor],
-        optimizer: torch.optim.Optimizer,
+        optimizer: Optimizer,
         epochs: int = 5,
     ) -> None:
         self.train_losses.clear()
         self.test_losses.clear()
-        for t in range(epochs):
-            print(f"Epoch {t + 1}\n-------------------------------")
+        for epoch in range(epochs):
+            print(f"Epoch {epoch + 1}\n-------------------------------")
             self.__train(train_dataloader, loss_fn, optimizer)
             self.__test(test_dataloader, loss_fn)
         print("Done!")
 
-    def __train(self, dataloader, loss_fn, optimizer) -> None:
+    def __train(
+        self,
+        dataloader,
+        loss_fn: Callable[[Tensor, Tensor], Tensor],
+        optimizer: Optimizer,
+    ) -> None:
+        """
+        Train the model using the provided dataloader, loss function, and optimizer.
+        :param dataloader: DataLoader for training data
+        :param loss_fn: loss function
+        :param optimizer: optimizer for updating model parameters
+        """
         size = len(dataloader.dataset)
         self.train()
         for batch, (X, y) in enumerate(dataloader):
@@ -82,7 +94,12 @@ class NeuralNetwork(nn.Module):
                 loss_value, current = loss.item(), (batch + 1) * len(X)
                 print(f"loss: {loss_value:>7f}  [{current:>5d}/{size:>5d}]")
 
-    def __test(self, dataloader, loss_fn) -> None:
+    def __test(self, dataloader, loss_fn: Callable[[Tensor, Tensor], Tensor]) -> None:
+        """
+        Evaluate the model using the provided dataloader and loss function.
+        :param dataloader: DataLoader for testing data
+        :param loss_fn: loss function
+        """
         size: int = len(dataloader.dataset)
         num_batches = len(dataloader)
         self.eval()
