@@ -1,3 +1,13 @@
+## [3.0.0](https://github.com/Mala1180/torchic/compare/2.0.0...3.0.0) (2025-04-24)
+
+### ⚠ BREAKING CHANGES
+
+* **utils:** replace DEVICE constant with a function
+
+### Refactoring
+
+* **utils:** replace DEVICE constant with a function ([7fe1c5f](https://github.com/Mala1180/torchic/commit/7fe1c5f560e631aa3547e725cc8dcc646737f465))
+
 ## [2.0.0](https://github.com/Mala1180/torchic/compare/1.0.1...2.0.0) (2025-04-24)
 
 ### ⚠ BREAKING CHANGES
