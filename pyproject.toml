@@ -26,6 +26,7 @@ coverage-html = "coverage html"
 ruff-check = "ruff check"
 ruff-fix = "ruff check --fix"
 format = "ruff format"
+format-check = "ruff format --check"
 mypy = "mypy torchic tests"
 compile = "python -m compileall torchic tests"
 static-checks = [
