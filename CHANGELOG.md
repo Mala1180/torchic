@@ -1,3 +1,9 @@
+## [4.0.1](https://github.com/Mala1180/torchic/compare/4.0.0...4.0.1) (2025-04-30)
+
+### Bug Fixes
+
+* **trainers:** fix loss collection for plots ([ab185f4](https://github.com/Mala1180/torchic/commit/ab185f4a690dc72b19deb2ebd19cc836d2acc8d7))
+
 ## [4.0.0](https://github.com/Mala1180/torchic/compare/3.0.0...4.0.0) (2025-04-30)
 
 ### ⚠ BREAKING CHANGES
