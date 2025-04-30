@@ -42,8 +42,8 @@ class TestDefaultTrainer:
             epochs=10,
         )
 
-        assert len(self.trainer.train_losses) > 0, "Train losses should be collected."
-        assert len(self.trainer.test_losses) > 0, "Test losses should be collected."
+        assert len(self.model.train_losses) > 0, "Train losses should be collected."
+        assert len(self.model.test_losses) > 0, "Test losses should be collected."
 
     def test_train_step_returns_valid_output(self):
         batch = torch.randn(10, 10).to(DEVICE)

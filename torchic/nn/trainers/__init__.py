@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Callable, List, Tuple
+from typing import Callable, Tuple
 
 import torch
 from torch import Tensor
@@ -20,15 +20,11 @@ class AbstractTrainer(ABC):
 
     Attributes:
         model (NeuralNetwork): The neural network model to be trained.
-        train_losses (List[torch.types.Number]): List of training losses for each step.
-        test_losses (List[torch.types.Number]): List of test losses for each step.
     """
 
     def __init__(self, model: NeuralNetwork) -> None:
         super().__init__()
         self.model: NeuralNetwork = model
-        self.train_losses: List[torch.types.Number] = []
-        self.test_losses: List[torch.types.Number] = []
 
     def fit(
         self,
@@ -48,8 +44,8 @@ class AbstractTrainer(ABC):
             optimizer (Optimizer): Optimizer for updating model parameters.
             epochs (int, optional): Number of training epochs. Defaults to 5.
         """
-        self.train_losses.clear()
-        self.test_losses.clear()
+        self.model.train_losses.clear()
+        self.model.test_losses.clear()
         for epoch in range(epochs):
             print(f"Epoch {epoch + 1}\n-------------------------------")
             self.__train(train_dataloader, loss_fn, optimizer)
@@ -67,7 +63,7 @@ class AbstractTrainer(ABC):
         for batch, (X, y) in enumerate(dataloader):
             input_batch, target = X.to(self.model.device()), y.to(self.model.device())
             pred, loss = self.train_step(input_batch, target, loss_fn)
-            self.train_losses.append(loss)
+            self.model.train_losses.append(loss)
             optimizer.step()
             optimizer.zero_grad()
             if batch % 100 == 0:
@@ -87,7 +83,7 @@ class AbstractTrainer(ABC):
                     y.to(self.model.device()),
                 )
                 pred, loss = self.eval_step(input_batch, target, loss_fn)
-                self.test_losses.append(loss)
+                self.model.test_losses.append(loss)
                 test_loss = test_loss + loss
                 predictions_tensor: Tensor = pred.argmax(1) == target
                 correct_predictions = correct_predictions + int(
