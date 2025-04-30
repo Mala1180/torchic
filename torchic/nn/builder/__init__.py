@@ -26,7 +26,7 @@ class NeuralNetworkBuilder:
     ) -> "NeuralNetworkBuilder":
         """
         Add a generic layer to the network.
-        :param name: layer name
+        :param name: Layer name
         :param layer: nn.Module layer
         :return: self
         """
@@ -45,10 +45,10 @@ class NeuralNetworkBuilder:
     ) -> "NeuralNetworkBuilder":
         """
         Add a linear layer to the network.
-        :param in_features: number of input features
-        :param out_features: number of output features
-        :param bias: whether to include a bias term
-        :param name: layer name
+        :param in_features: Number of input features
+        :param out_features: Number of output features
+        :param bias: Whether to include a bias term
+        :param name: Layer name
         :return: self
         """
         self.__assert_layer_name(name)
@@ -65,8 +65,8 @@ class NeuralNetworkBuilder:
     ) -> "NeuralNetworkBuilder":
         """
         Add parallel layers as a single block.
-        :param name: layer name
-        :param layer_dict: dictionary of nn.Module layers
+        :param name: Layer name
+        :param layer_dict: Dictionary of nn.Module layers
         :return: self
         """
         self.__assert_layer_name(name)
@@ -92,8 +92,8 @@ class NeuralNetworkBuilder:
         """
         Add a transformation layer to the network.
         It transforms the input tensor using the specified function.
-        :param name: layer name
-        :param transform_fn: transformation function
+        :param name: Layer name
+        :param transform_fn: Transformation function
         :return: self
         """
         self.__assert_layer_name(name)
@@ -105,7 +105,7 @@ class NeuralNetworkBuilder:
     def build(self) -> NeuralNetwork:
         """
         Build the NeuralNetwork instance.
-        :return: the neural network created up to this point
+        :return: The neural network created up to this point
         """
         if len(self.layers) == 0:
             raise ValueError("No layers have been added to the network.")
@@ -125,8 +125,8 @@ class NeuralNetworkBuilder:
     def __provide_layer_name(self, base_name: str) -> str:
         """
         Provide a unique name for the layer.
-        :param base_name: base name for the layer
-        :return: unique layer name
+        :param base_name: Base name for the layer
+        :return: Unique layer name
         """
         counter: int = 1
         name: str = base_name + str(counter)

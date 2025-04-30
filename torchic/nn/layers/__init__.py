@@ -12,7 +12,7 @@ class TransformLayer(nn.Module):
     def __init__(self, transform_fn: Callable[[Tensor], Tensor]) -> None:
         """
         Initializes the TransformLayer with a transformation function.
-        :param transform_fn: the transformation function
+        :param transform_fn: The transformation function
         """
         super().__init__()
         self.transform_function: Callable[[Tensor], Tensor] = transform_fn

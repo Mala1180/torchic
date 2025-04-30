@@ -1,10 +1,8 @@
-from typing import Callable, List, Tuple
+from typing import List, Tuple
 
 import matplotlib.pyplot as plt
 import torch
 from torch import nn, Tensor
-from torch.utils.data import DataLoader
-from torch.optim.optimizer import Optimizer
 
 
 class InferenceResult:
@@ -41,89 +39,8 @@ class NeuralNetwork(nn.Module):
     def inference(self, input_data: Tensor) -> InferenceResult:
         self.eval()  # Set the model to evaluation mode
         with torch.no_grad():  # Disable gradient calculation for inference
-            result: Tensor = self(
-                input_data.to(self.device())
-            )  # Use model(input) to ensure proper behavior
+            result: Tensor = self(input_data.to(self.device()))
         return InferenceResult(result)
-
-    def fit(
-        self,
-        train_dataloader: DataLoader,
-        test_dataloader: DataLoader,
-        loss_fn: Callable[[Tensor, Tensor], Tensor],
-        optimizer: Optimizer,
-        epochs: int = 5,
-    ) -> None:
-        self.train_losses.clear()
-        self.test_losses.clear()
-        for epoch in range(epochs):
-            print(f"Epoch {epoch + 1}\n-------------------------------")
-            self.__train(train_dataloader, loss_fn, optimizer)
-            self.__test(test_dataloader, loss_fn)
-        print("Done!")
-
-    def __train(
-        self,
-        dataloader,
-        loss_fn: Callable[[Tensor, Tensor], Tensor],
-        optimizer: Optimizer,
-    ) -> None:
-        """
-        Train the model using the provided dataloader, loss function, and optimizer.
-        :param dataloader: DataLoader for training data
-        :param loss_fn: loss function
-        :param optimizer: optimizer for updating model parameters
-        """
-        size = len(dataloader.dataset)
-        self.train()
-        for batch, (X, y) in enumerate(dataloader):
-            X, y = X.to(self.device()), y.to(self.device())
-
-            # Compute prediction error
-            pred: Tensor = self(X)
-            loss: Tensor = loss_fn(pred, y)
-            # Backpropagation
-            # if loss is not reduced to a scalar
-            if loss.dim() != 0:
-                loss = loss.mean()
-            self.train_losses.append(loss.item())
-            loss.backward()
-            optimizer.step()
-            optimizer.zero_grad()
-            if batch % 100 == 0:
-                loss_value, current = loss.item(), (batch + 1) * len(X)
-                print(f"loss: {loss_value:>7f}  [{current:>5d}/{size:>5d}]")
-
-    def __test(self, dataloader, loss_fn: Callable[[Tensor, Tensor], Tensor]) -> None:
-        """
-        Evaluate the model using the provided dataloader and loss function.
-        :param dataloader: DataLoader for testing data
-        :param loss_fn: loss function
-        """
-        size: int = len(dataloader.dataset)
-        num_batches = len(dataloader)
-        self.eval()
-        test_loss: float = 0
-        correct_predictions: int = 0
-        with torch.no_grad():
-            for X, y in dataloader:
-                X, y = X.to(self.device()), y.to(self.device())
-                pred: Tensor = self(X)
-                loss: Tensor = loss_fn(pred, y)
-                if loss.dim() != 0:
-                    loss = loss.mean()
-                self.test_losses.append(loss.item())
-                test_loss = test_loss + loss.item()
-                predictions_tensor: Tensor = pred.argmax(1) == y
-                correct_predictions = correct_predictions + int(
-                    predictions_tensor.int().sum().item()
-                )
-
-        avg_loss: float = test_loss / num_batches
-        accuracy: float = 100 * correct_predictions / size
-        print(
-            f"Test Error: \n Accuracy: {accuracy:>0.1f}%, Avg loss: {avg_loss:>8f} \n"
-        )
 
     def save(self, path: str) -> None:
         save_dict = {
