@@ -1,3 +1,17 @@
+## [4.0.0](https://github.com/Mala1180/torchic/compare/3.0.0...4.0.0) (2025-04-30)
+
+### ⚠ BREAKING CHANGES
+
+* add trainers module
+
+### Features
+
+* add trainers module ([8805a82](https://github.com/Mala1180/torchic/commit/8805a8286513b5384b62a28ae1d0eb907708442f))
+
+### Build and continuous integration
+
+* fix coverage report command ([9731374](https://github.com/Mala1180/torchic/commit/9731374349d4e6bc7ac9cfa633260714264eb7ad))
+
 ## [3.0.0](https://github.com/Mala1180/torchic/compare/2.0.0...3.0.0) (2025-04-24)
 
 ### ⚠ BREAKING CHANGES
