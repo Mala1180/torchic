@@ -1,3 +1,9 @@
+## [4.0.2](https://github.com/Mala1180/torchic/compare/4.0.1...4.0.2) (2025-07-09)
+
+### Bug Fixes
+
+* **AbstractTrainer:** make loss plots with average loss ([f9415ba](https://github.com/Mala1180/torchic/commit/f9415badc7821a1fc82b5c22730fed6040269159))
+
 ## [4.0.1](https://github.com/Mala1180/torchic/compare/4.0.0...4.0.1) (2025-04-30)
 
 ### Bug Fixes
