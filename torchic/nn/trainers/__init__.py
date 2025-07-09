@@ -59,16 +59,21 @@ class AbstractTrainer(ABC):
         optimizer: Optimizer,
     ) -> None:
         size = len(dataloader.dataset)
+        num_batches = len(dataloader)
+        batch_loss: float = 0.0
         self.model.train()
         for batch, (X, y) in enumerate(dataloader):
             input_batch, target = X.to(self.model.device()), y.to(self.model.device())
             pred, loss = self.train_step(input_batch, target, loss_fn)
-            self.model.train_losses.append(loss)
+            batch_loss += loss
             optimizer.step()
             optimizer.zero_grad()
             if batch % 100 == 0:
                 loss_value, current = loss, (batch + 1) * len(input_batch)
                 print(f"loss: {loss_value:>7f}  [{current:>5d}/{size:>5d}]")
+
+        avg_loss: float = batch_loss / num_batches
+        self.model.train_losses.append(avg_loss)
 
     def __test(self, dataloader, loss_fn: Callable[[Tensor, Tensor], Tensor]) -> None:
         size: int = len(dataloader.dataset)
@@ -83,7 +88,6 @@ class AbstractTrainer(ABC):
                     y.to(self.model.device()),
                 )
                 pred, loss = self.eval_step(input_batch, target, loss_fn)
-                self.model.test_losses.append(loss)
                 test_loss = test_loss + loss
                 predictions_tensor: Tensor = pred.argmax(1) == target
                 correct_predictions = correct_predictions + int(
@@ -91,6 +95,7 @@ class AbstractTrainer(ABC):
                 )
 
         avg_loss: float = test_loss / num_batches
+        self.model.test_losses.append(avg_loss)
         accuracy: float = 100 * correct_predictions / size
         print(
             f"Test Error: \n Accuracy: {accuracy:>0.1f}%, Avg loss: {avg_loss:>8f} \n"
