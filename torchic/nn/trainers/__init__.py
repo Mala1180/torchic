@@ -49,7 +49,7 @@ class AbstractTrainer(ABC):
         for epoch in range(epochs):
             print(f"Epoch {epoch + 1}\n-------------------------------")
             self.__train(train_dataloader, loss_fn, optimizer)
-            self.__test(test_dataloader, loss_fn)
+            self.__validate(test_dataloader, loss_fn)
         print("Done!")
 
     def __train(
@@ -75,7 +75,7 @@ class AbstractTrainer(ABC):
         avg_loss: float = batch_loss / num_batches
         self.model.train_losses.append(avg_loss)
 
-    def __test(self, dataloader, loss_fn: Callable[[Tensor, Tensor], Tensor]) -> None:
+    def __validate(self, dataloader, loss_fn: Callable[[Tensor, Tensor], Tensor]) -> None:
         size: int = len(dataloader.dataset)
         num_batches = len(dataloader)
         self.model.eval()
