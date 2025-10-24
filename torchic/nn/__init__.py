@@ -16,7 +16,7 @@ class NeuralNetwork(nn.Module):
         super().__init__()
         self.layers: nn.ModuleDict = layers
         self.train_losses: List[float] = []
-        self.val_losses: List[float] = []
+        self.test_losses: List[float] = []
 
     def device(self) -> torch.device:
         return next(self.parameters()).device
@@ -46,7 +46,7 @@ class NeuralNetwork(nn.Module):
         save_dict = {
             "model_state_dict": self.state_dict(),
             "train_losses": self.train_losses,
-            "val_losses": self.val_losses,
+            "test_losses": self.test_losses,
         }
         torch.save(save_dict, path)
 
@@ -54,10 +54,10 @@ class NeuralNetwork(nn.Module):
         neural_network_model = torch.load(path, weights_only=True)
         self.load_state_dict(neural_network_model["model_state_dict"])
         self.train_losses = neural_network_model["train_losses"]
-        self.val_losses = neural_network_model["val_losses"]
+        self.test_losses = neural_network_model["test_losses"]
 
     def plot_loss(self) -> None:
-        if not self.train_losses or not self.val_losses:
+        if not self.train_losses or not self.test_losses:
             print("The network has not been trained yet.")
             return
 
@@ -76,12 +76,12 @@ class NeuralNetwork(nn.Module):
 
         # Plot testing loss on the second subplot
         ax2.plot(
-            range(1, len(self.val_losses) + 1),
-            self.val_losses,
-            label="Validation Loss",
+            range(1, len(self.test_losses) + 1),
+            self.test_losses,
+            label="Test Loss",
             color="red",
         )
-        ax2.set_title("Validation Loss")
+        ax2.set_title("Test Loss")
         ax2.set_xlabel("Batch")
         ax2.set_ylabel("Loss Value")
 

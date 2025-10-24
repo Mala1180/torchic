@@ -29,7 +29,7 @@ class AbstractTrainer(ABC):
     def fit(
         self,
         train_dataloader: DataLoader,
-        val_dataloader: DataLoader,
+        test_dataloader: DataLoader,
         loss_fn: Callable[[Tensor, Tensor], Tensor],
         optimizer: Optimizer,
         epochs: int = 5,
@@ -39,17 +39,17 @@ class AbstractTrainer(ABC):
 
         Args:
             train_dataloader (DataLoader): DataLoader for training data.
-            val_dataloader (DataLoader): DataLoader for validation data.
+            test_dataloader (DataLoader): DataLoader for validation/test data.
             loss_fn (Callable[[Tensor, Tensor], Tensor]): Loss function to compute model error.
             optimizer (Optimizer): Optimizer for updating model parameters.
             epochs (int, optional): Number of training epochs. Defaults to 5.
         """
         self.model.train_losses.clear()
-        self.model.val_losses.clear()
+        self.model.test_losses.clear()
         for epoch in range(epochs):
             print(f"Epoch {epoch + 1}\n-------------------------------")
             self.__train(train_dataloader, loss_fn, optimizer)
-            self.__validate(val_dataloader, loss_fn)
+            self.__test(test_dataloader, loss_fn)
         print("Done!")
 
     def __train(
@@ -75,13 +75,11 @@ class AbstractTrainer(ABC):
         avg_loss: float = batch_loss / num_batches
         self.model.train_losses.append(avg_loss)
 
-    def __validate(
-        self, dataloader, loss_fn: Callable[[Tensor, Tensor], Tensor]
-    ) -> None:
+    def __test(self, dataloader, loss_fn: Callable[[Tensor, Tensor], Tensor]) -> None:
         size: int = len(dataloader.dataset)
         num_batches = len(dataloader)
         self.model.eval()
-        val_loss: float = 0
+        test_loss: float = 0
         correct_predictions: int = 0
         with torch.no_grad():
             for X, y in dataloader:
@@ -90,17 +88,17 @@ class AbstractTrainer(ABC):
                     y.to(self.model.device()),
                 )
                 pred, loss = self.eval_step(input_batch, target, loss_fn)
-                val_loss = val_loss + loss
+                test_loss = test_loss + loss
                 predictions_tensor: Tensor = pred.argmax(1) == target
                 correct_predictions = correct_predictions + int(
                     predictions_tensor.int().sum().item()
                 )
 
-        avg_loss: float = val_loss / num_batches
-        self.model.val_losses.append(avg_loss)
+        avg_loss: float = test_loss / num_batches
+        self.model.test_losses.append(avg_loss)
         accuracy: float = 100 * correct_predictions / size
         print(
-            f"Validation Error: \n Accuracy: {accuracy:>0.1f}%, Avg loss: {avg_loss:>8f} \n"
+            f"Test Error: \n Accuracy: {accuracy:>0.1f}%, Avg loss: {avg_loss:>8f} \n"
         )
 
     @abstractmethod
