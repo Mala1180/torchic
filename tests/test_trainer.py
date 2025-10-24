@@ -36,14 +36,14 @@ class TestDefaultTrainer:
     def test_fit_runs_and_accumulates_losses(self):
         self.trainer.fit(
             train_dataloader=self.dataloader,
-            test_dataloader=self.dataloader,
+            val_dataloader=self.dataloader,
             loss_fn=self.loss_fn,
             optimizer=self.optimizer,
             epochs=10,
         )
 
         assert len(self.model.train_losses) > 0, "Train losses should be collected."
-        assert len(self.model.test_losses) > 0, "Test losses should be collected."
+        assert len(self.model.val_losses) > 0, "Test losses should be collected."
 
     def test_train_step_returns_valid_output(self):
         batch = torch.randn(10, 10).to(DEVICE)
