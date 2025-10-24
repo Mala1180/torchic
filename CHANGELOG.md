@@ -1,3 +1,9 @@
+## [5.0.1](https://github.com/Mala1180/torchic/compare/5.0.0...5.0.1) (2025-10-24)
+
+### Revert previous changes
+
+* rename "validation" in "test" ([79d70dd](https://github.com/Mala1180/torchic/commit/79d70dd39fec3dc7ae2c3ba8da9ab21915fec628))
+
 ## [5.0.0](https://github.com/Mala1180/torchic/compare/4.0.2...5.0.0) (2025-10-24)
 
 ### ⚠ BREAKING CHANGES
