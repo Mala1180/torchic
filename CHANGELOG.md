@@ -1,3 +1,14 @@
+## [5.0.0](https://github.com/Mala1180/torchic/compare/4.0.2...5.0.0) (2025-10-24)
+
+### ⚠ BREAKING CHANGES
+
+* rename "test" in "validation"
+
+### Refactoring
+
+* rename "test" in "validation" ([cf8fdd8](https://github.com/Mala1180/torchic/commit/cf8fdd8ebae09a7172a9f1812e493a3a3320f5bd))
+* **trainers:** change private method name in AbstractTrainer ([5fafdc7](https://github.com/Mala1180/torchic/commit/5fafdc783ad23f3981829fde6f92504680fe6766))
+
 ## [4.0.2](https://github.com/Mala1180/torchic/compare/4.0.1...4.0.2) (2025-07-09)
 
 ### Bug Fixes
