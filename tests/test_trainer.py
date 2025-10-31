@@ -48,7 +48,7 @@ class TestDefaultTrainer:
     def test_train_step_returns_valid_output(self):
         batch = torch.randn(10, 10).to(DEVICE)
         target = torch.randint(0, 2, (10,)).to(DEVICE)
-        pred, loss = self.trainer.train_step(batch, target, self.loss_fn)
+        pred, loss = self.trainer.train_step(batch, target, self.loss_fn, 0)
 
         assert isinstance(pred, torch.Tensor)
         assert isinstance(loss, float)
@@ -56,7 +56,7 @@ class TestDefaultTrainer:
     def test_eval_step_returns_valid_output(self):
         batch = torch.randn(10, 10).to(DEVICE)
         target = torch.randint(0, 2, (10,)).to(DEVICE)
-        pred, loss = self.trainer.eval_step(batch, target, self.loss_fn)
+        pred, loss = self.trainer.eval_step(batch, target, self.loss_fn, 0)
 
         assert isinstance(pred, torch.Tensor)
         assert isinstance(loss, float)

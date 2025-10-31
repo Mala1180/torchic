@@ -48,8 +48,8 @@ class AbstractTrainer(ABC):
         self.model.test_losses.clear()
         for epoch in range(epochs):
             print(f"Epoch {epoch + 1}\n-------------------------------")
-            self.__train(train_dataloader, loss_fn, optimizer)
-            self.__test(test_dataloader, loss_fn)
+            self.__train(train_dataloader, loss_fn, optimizer, epoch)
+            self.__test(test_dataloader, loss_fn, epoch)
         print("Done!")
 
     def __train(
@@ -57,6 +57,7 @@ class AbstractTrainer(ABC):
         dataloader,
         loss_fn: Callable[[Tensor, Tensor], Tensor],
         optimizer: Optimizer,
+        epoch: int,
     ) -> None:
         size = len(dataloader.dataset)
         num_batches = len(dataloader)
@@ -64,7 +65,7 @@ class AbstractTrainer(ABC):
         self.model.train()
         for batch, (X, y) in enumerate(dataloader):
             input_batch, target = X.to(self.model.device()), y.to(self.model.device())
-            pred, loss = self.train_step(input_batch, target, loss_fn)
+            pred, loss = self.train_step(input_batch, target, loss_fn, epoch)
             batch_loss += loss
             optimizer.step()
             optimizer.zero_grad()
@@ -75,7 +76,9 @@ class AbstractTrainer(ABC):
         avg_loss: float = batch_loss / num_batches
         self.model.train_losses.append(avg_loss)
 
-    def __test(self, dataloader, loss_fn: Callable[[Tensor, Tensor], Tensor]) -> None:
+    def __test(
+        self, dataloader, loss_fn: Callable[[Tensor, Tensor], Tensor], epoch: int
+    ) -> None:
         size: int = len(dataloader.dataset)
         num_batches = len(dataloader)
         self.model.eval()
@@ -87,7 +90,7 @@ class AbstractTrainer(ABC):
                     X.to(self.model.device()),
                     y.to(self.model.device()),
                 )
-                pred, loss = self.eval_step(input_batch, target, loss_fn)
+                pred, loss = self.eval_step(input_batch, target, loss_fn, epoch)
                 test_loss = test_loss + loss
                 predictions_tensor: Tensor = pred.argmax(1) == target
                 correct_predictions = correct_predictions + int(
@@ -103,7 +106,7 @@ class AbstractTrainer(ABC):
 
     @abstractmethod
     def train_step(
-        self, batch: Tensor, target: Tensor, loss_fn: Callable
+        self, batch: Tensor, target: Tensor, loss_fn: Callable, epoch: int
     ) -> Tuple[Tensor, torch.types.Number]:
         """
         Perform a single training step.
@@ -121,7 +124,7 @@ class AbstractTrainer(ABC):
 
     @abstractmethod
     def eval_step(
-        self, batch: Tensor, target: Tensor, loss_fn: Callable
+        self, batch: Tensor, target: Tensor, loss_fn: Callable, epoch: int
     ) -> Tuple[Tensor, torch.types.Number]:
         """
         Perform a single evaluation step.
@@ -149,7 +152,7 @@ class DefaultTrainer(AbstractTrainer):
         super().__init__(model)
 
     def train_step(
-        self, input_batch: Tensor, target: Tensor, loss_fn: Callable
+        self, input_batch: Tensor, target: Tensor, loss_fn: Callable, epoch: int
     ) -> Tuple[Tensor, torch.types.Number]:
         # Compute prediction error
         pred: Tensor = self.model(input_batch)
@@ -164,7 +167,7 @@ class DefaultTrainer(AbstractTrainer):
         return pred, loss.item()
 
     def eval_step(
-        self, input_batch: Tensor, target: Tensor, loss_fn: Callable
+        self, input_batch: Tensor, target: Tensor, loss_fn: Callable, epoch: int
     ) -> Tuple[Tensor, torch.types.Number]:
         pred: Tensor = self.model(input_batch)
         loss: Tensor = loss_fn(pred, target)
