@@ -1,3 +1,9 @@
+## [5.1.0](https://github.com/Mala1180/torchic/compare/5.0.1...5.1.0) (2025-10-31)
+
+### Features
+
+* **trainers:** add epoch parameter in train and eval steps ([eafd4ff](https://github.com/Mala1180/torchic/commit/eafd4ffa335e352ee4dcf9c4e34986ea7466e258))
+
 ## [5.0.1](https://github.com/Mala1180/torchic/compare/5.0.0...5.0.1) (2025-10-24)
 
 ### Revert previous changes
