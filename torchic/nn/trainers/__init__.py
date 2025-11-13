@@ -1,3 +1,4 @@
+import warnings
 from abc import ABC, abstractmethod
 from typing import Callable, Tuple
 
@@ -23,6 +24,12 @@ class AbstractTrainer(ABC):
     """
 
     def __init__(self, model: NeuralNetwork) -> None:
+        warnings.warn(
+            "AbstractTrainer is not meant to be used for now. "
+            "Please avoid using it.",
+            DeprecationWarning,
+            stacklevel=2
+        )
         super().__init__()
         self.model: NeuralNetwork = model
 
@@ -149,6 +156,12 @@ class DefaultTrainer(AbstractTrainer):
     """
 
     def __init__(self, model: NeuralNetwork) -> None:
+        warnings.warn(
+            "DefaultTrainer is not meant to be used for now. "
+            "Please avoid using it.",
+            DeprecationWarning,
+            stacklevel=2
+        )
         super().__init__(model)
 
     def train_step(
